@@ -1,6 +1,9 @@
--- Generate random data into table worker 
-
+DELETE FROM project_worker;
+DELETE FROM project;
 DELETE FROM worker;
+DELETE FROM client;
+
+-- Generate random data into table worker 
 
 WITH l as (SELECT rownum() ID, levels.level LEVEL FROM TABLE(level VARCHAR = ('Trainee', 'Junior', 'Middle', 'Senior')) levels),
      n as (SELECT * FROM TABLE(name VARCHAR = ('Bill', 'Elon', 'Bob', 'Jon', 'Mark', 'Jeremy', 'Harry', 'Thomas', 'Oscar', 'George', 'Jacob', 'Jim', 'Evan', 'Tom', 'Richard')) name)
@@ -44,15 +47,11 @@ UPDATE worker w
 
 -- Generate random data into table client
 
-DELETE FROM client;
-
 INSERT INTO client(NAME)
 SELECT names.NAME FROM TABLE(name VARCHAR = ('Olivia', 'Emma', 'Charlotte', 'Amelia', 'Ava', 'Sophia', 'Isabella', 'Mia', 'Evelyn', 'Harper')) names;
 
 -- Generate random data into table project
  
-DELETE FROM project;
-
 INSERT INTO project (CLIENT_ID, START_DATE) 
 
 SELECT c.ID                                                                CLIENT_ID, 
@@ -64,8 +63,6 @@ SELECT c.ID                                                                CLIEN
 UPDATE project p SET p.FINISH_DATE = DATEADD('MONTH', CONVERT(ROUND(RAND()*99+1),INT), p.START_DATE); 
 
 -- Generate random data into table project_worker
-
-DELETE FROM project_worker;
 
 WITH worker_set AS (SELECT p.ID                           PROJECT_ID,
                            w.ID                           WORKER_ID, 
